@@ -6,6 +6,7 @@ export const envSchema = z.object({
   HOST: z.string().default("0.0.0.0"),
   PORT: z.coerce.number().default(8000),
   BASE_PATH: z.string().trim(),
+  PG_DATABASE_HOST: z.string().trim().default("localhost"),
   PG_DATABASE_PORT: z.coerce.number(),
   PG_DATABASE_USERNAME: z.string().trim(),
   PG_DATABASE_PASSWORD: z.string().trim(),
