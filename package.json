@@ -1,0 +1,31 @@
+{
+  "name": "payment-gateway",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write \"apps/**/src/**/*.ts\" \"__test__/**/*.ts\"",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage"
+  },
+  "devDependencies": {
+    "@eslint/compat": "^1.2.8",
+    "@swc/core": "^1.11.18",
+    "@swc/jest": "^0.2.37",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.14.0",
+    "@typescript-eslint/eslint-plugin": "^8.29.1",
+    "eslint": "^9.24.0",
+    "jest": "^29.7.0",
+    "prettier": "^3.5.3",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0",
+    "zod": "^3.24.2"
+  }
+}
