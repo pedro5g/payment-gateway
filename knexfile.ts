@@ -1,4 +1,4 @@
-import { env } from "core/env"
+import { env } from "./core/env"
 import type { Knex } from "knex"
 
 const config = {
@@ -9,6 +9,9 @@ const config = {
     database: env.PG_DATABASE_NAME,
     user: env.PG_DATABASE_USERNAME,
     password: env.PG_DATABASE_PASSWORD,
+  },
+  migrations: {
+    directory: "./migrations",
   },
 } satisfies Knex.Config
 

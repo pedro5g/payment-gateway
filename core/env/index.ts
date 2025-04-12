@@ -17,8 +17,8 @@ const _env = envSchema.safeParse(process.env)
 
 if (!_env.success) {
   logger.error(
+    _env.error.flatten().fieldErrors,
     "Invalid environments variables ❌❌❌❌❌",
-    _env.error.flatten(),
   )
   throw new Error("Invalid environments variables")
 }
