@@ -1,5 +1,5 @@
 @baseURL = http://localhost:8000/api/v1/account
-
+@apiKey = 1ionp4b9t-34e19b07d040b21ea39b1e0063ca1b01ee72666c4e94f3ffe16a840f4a8d68e9
 
 # @name create_account
 POST {{baseURL}}/register
@@ -9,3 +9,9 @@ Content-Type: application/json
     "name": "test",
     "email": "test@email.com"
 }
+
+###
+
+# @name get_account
+GET {{baseURL}}/
+X-Api-Key: {{apiKey}}

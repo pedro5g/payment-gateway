@@ -3,6 +3,8 @@ import { Context } from "../../../../core/models/knex/context"
 import { CreateAccountService } from "../services/create-account.service"
 import { CreateAccountController } from "../controllers/create-account.controller"
 import { AccountRoute } from "../routes/account.route"
+import { GetAccountService } from "../services/get-account.service"
+import { GetAccountController } from "../controllers/get-account.controller"
 
 export class AccountModule {
   static build(app: FastifyInstance) {
@@ -11,8 +13,14 @@ export class AccountModule {
     const createAccountController = new CreateAccountController(
       createAccountService,
     )
-    const accountRoutes = new AccountRoute([createAccountController])
+    const getAccountService = new GetAccountService(accountModel)
+    const getAccountController = new GetAccountController(getAccountService)
 
-    return accountRoutes.build(app)
+    const accountRoutes = new AccountRoute([
+      createAccountController,
+      getAccountController,
+    ])
+
+    return accountRoutes.bind(app)
   }
 }
