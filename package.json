@@ -1,7 +1,13 @@
 {
   "name": "payment-gateway",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "type": "module",
+  "private": true,
+  "main": "index.js",
+  "workspaces": [
+    "account",
+    "gateway"
+  ],
   "scripts": {
     "migrate:make": "tsx --env-file=.env ./node_modules/.bin/knex  --knexfile ./knexfile.ts \"migrate:make\" $1",
     "migrate:up": "tsx --env-file=.env ./node_modules/.bin/knex  --knexfile ./knexfile.ts \"migrate:up\" $1",

@@ -1,10 +1,10 @@
 import Knex from "knex"
 import { setupKnexSchemaTest } from "../../../../test/shared/setup-knex-schema-test"
 import { Context } from "../context"
-import { IAccountRepository } from "../../../__domain/repositories/account.repository"
+import { IAccountModel } from "../../../__domain/models/account.model"
 import { Account } from "../../../../core/__domain/entities/account.entity"
 
-let sut: IAccountRepository
+let sut: IAccountModel
 let ctx: Context
 let db: ReturnType<typeof Knex>
 let teardown: () => Promise<void>

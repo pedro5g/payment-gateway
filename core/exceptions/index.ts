@@ -59,3 +59,13 @@ export class HttpException extends AppError {
     super(message, statusCode, errorCode)
   }
 }
+
+export class DatabaseException extends AppError {
+  constructor(message = "Database Exception Error", errorCode?: ErrorCodeType) {
+    super(
+      message,
+      HTTP_STATUS.INTERNAL_SERVER_ERROR,
+      errorCode || ErrorCode.DATABASE_ERROR,
+    )
+  }
+}

@@ -1,20 +1,27 @@
 import { Tables } from "knex/types/tables"
 import { Account } from "../../__domain/entities/account.entity"
-import { IAccountRepository } from "../../__domain/repositories/account.repository"
+import { IAccountModel } from "../../__domain/models/account.model"
 import { BaseModel } from "./base"
 import { genAPIKey } from "../../utils/gen-api-key"
+import { DatabaseException } from "../../../core/exceptions"
 
-export class AccountModel extends BaseModel implements IAccountRepository {
+export class AccountModel extends BaseModel implements IAccountModel {
   async save(entity: Account): Promise<void> {
-    await this.knex("accounts").insert({
-      id: entity.id,
-      name: entity.name,
-      email: entity.email,
-      api_key: entity.APIKey,
-      balance: entity.balance,
-      created_at: entity.createdAt,
-      updated_at: entity.updatedAt,
-    })
+    const [account] = await this.knex("accounts")
+      .insert({
+        id: entity.id,
+        name: entity.name,
+        email: entity.email,
+        api_key: entity.APIKey,
+        balance: entity.balance,
+        created_at: entity.createdAt,
+        updated_at: entity.updatedAt,
+      })
+      .returning("*")
+
+    if (!account || account.id !== entity.id) {
+      throw new DatabaseException("Failure on create account")
+    }
   }
 
   async update(entity: Account): Promise<void> {
@@ -27,7 +34,9 @@ export class AccountModel extends BaseModel implements IAccountRepository {
       })
 
     if (rowsAffected <= 0) {
-      throw new Error(`Error on update account with id ${entity.id}`)
+      throw new DatabaseException(
+        `Error on update account with id ${entity.id}`,
+      )
     }
   }
 
@@ -41,7 +50,7 @@ export class AccountModel extends BaseModel implements IAccountRepository {
         .first()
 
       if (!account) {
-        throw new Error(`Account: ${entity.id} not found`)
+        throw new DatabaseException(`Account: ${entity.id} not found`)
       }
 
       const rowsAffected = await trx("accounts")
@@ -54,7 +63,9 @@ export class AccountModel extends BaseModel implements IAccountRepository {
         })
 
       if (rowsAffected <= 0) {
-        throw new Error(`Error on update account with id ${entity.id}`)
+        throw new DatabaseException(
+          `Error on update account with id ${entity.id}`,
+        )
       }
     })
   }

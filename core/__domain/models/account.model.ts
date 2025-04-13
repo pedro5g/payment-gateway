@@ -1,7 +1,7 @@
 import { Account } from "../entities/account.entity"
-import { IRepository } from "./repository"
+import { IBaseModel } from "./base.model"
 
-export interface IAccountRepository extends IRepository<Account> {
+export interface IAccountModel extends IBaseModel<Account> {
   findByEmail(email: string): Promise<Account | null>
   findByAPIKey(apiKey: string): Promise<Account | null>
   updateBalance(entity: Account): Promise<void>

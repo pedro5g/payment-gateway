@@ -1,12 +1,12 @@
 import { Knex } from "knex"
 import { db } from "../../db/knex"
-import { IAccountRepository } from "../../__domain/repositories/account.repository"
+import { IAccountModel } from "../../__domain/models/account.model"
 import { AccountModel } from "./account.model"
 import { BaseModel } from "./base"
 
 export class Context {
   db: Knex
-  accounts: IAccountRepository
+  accounts: IAccountModel
 
   constructor() {
     this.db = db
