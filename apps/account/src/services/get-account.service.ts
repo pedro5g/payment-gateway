@@ -3,13 +3,15 @@ import {
   GetAccountBodyDto,
   GetAccountResponseDto,
 } from "../../../../core/__domain/dtos/account.dto"
-import { IAccountModel } from "../../../../core/__domain/models/account.model"
+import { Context } from "../../../../core/models/knex/context"
+import { Inject, Service } from "../core/domain/infra/decorators"
 
+@Service()
 export class GetAccountService {
-  constructor(private readonly accountModel: IAccountModel) {}
+  constructor(@Inject(Context) private readonly context: Context) {}
 
   async execute({ apiKey }: GetAccountBodyDto): Promise<GetAccountResponseDto> {
-    const account = await this.accountModel.findByAPIKey(apiKey)
+    const account = await this.context.accounts.findByAPIKey(apiKey)
 
     if (!account) {
       throw new NotFoundException("Account not found")

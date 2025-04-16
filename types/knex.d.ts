@@ -11,9 +11,22 @@ declare module "knex/types/tables" {
     updated_at: Date
   }
 
+  interface Invoice {
+    id: string
+    account_id: string
+    amount: number
+    description: string | null
+    status: "pending" | "approved" | "rejected"
+    payment_type: string
+    card_last_digits: string
+    created_at: Date
+    updated_at: Date
+  }
+
   interface Tables {
     // This is same as specifying `knex<User>('users')`
     accounts: Account
+    invoices: Invoice
     // For more advanced types, you can specify separate type
     // for base model, "insert" type and "update" type.
     // But first: notice that if you choose to use this,

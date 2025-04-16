@@ -3,14 +3,18 @@ import { db } from "../../db/knex"
 import { IAccountModel } from "../../__domain/models/account.model"
 import { AccountModel } from "./account.model"
 import { BaseModel } from "./base"
+import { IInvoiceModel } from "../../__domain/models/invoice.model"
+import { InvoiceModel } from "./invoice.model"
 
 export class Context {
   db: Knex
   accounts: IAccountModel
+  invoices: IInvoiceModel
 
   constructor() {
     this.db = db
     this.accounts = new AccountModel(this)
+    this.invoices = new InvoiceModel(this)
   }
 
   async knexTransaction(fn: Function, callback?: (error: unknown) => void) {

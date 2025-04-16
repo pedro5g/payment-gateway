@@ -1,15 +1,28 @@
-import { FastifyReply, FastifyRequest } from "fastify"
 import { GetAccountService } from "../services/get-account.service"
-import { HTTP_STATUS } from "../../../../core/utils/http-status"
+import { Controller } from "../../../../core/__domain/infra/controller"
+import { HttpResponse, ok } from "../../../../core/__domain/infra/http-response"
+import { HttpRequest } from "../../../../core/__domain/infra/http-request"
+import {
+  HttpMethod,
+  HttpMiddleware,
+  Inject,
+  RestController,
+} from "../core/domain/infra/decorators"
+import { HasApiKeyMiddleware } from "../../../../core/middlewares/has-api-key"
 
-export class GetAccountController {
-  constructor(private readonly getAccountService: GetAccountService) {}
+@HttpMethod("GET")
+@HttpMiddleware([HasApiKeyMiddleware])
+@RestController()
+export class GetAccountController implements Controller {
+  constructor(
+    @Inject(GetAccountService)
+    private readonly getAccountService: GetAccountService,
+  ) {}
 
-  async handler(request: FastifyRequest, reply: FastifyReply) {
-    const apiKey = request.apiKey
-
+  async handler(request: HttpRequest): Promise<HttpResponse> {
+    const apiKey = request.apiKey || ""
     const account = await this.getAccountService.execute({ apiKey })
 
-    return reply.status(HTTP_STATUS.OK).send({ account })
+    return ok({ message: "Account", account })
   }
 }

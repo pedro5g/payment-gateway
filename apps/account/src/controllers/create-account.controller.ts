@@ -1,19 +1,25 @@
-import { FastifyRequest, FastifyReply } from "fastify"
 import { createAccountSchema } from "../../../../core/validators/account.validator"
 import { CreateAccountService } from "../services/create-account.service"
+import { Controller } from "../../../../core/__domain/infra/controller"
+import { HttpResponse, ok } from "../../../../core/__domain/infra/http-response"
+import { HttpRequest } from "../../../../core/__domain/infra/http-request"
+import {
+  HttpMethod,
+  Inject,
+  RestController,
+} from "../core/domain/infra/decorators"
 
-import { HTTP_STATUS } from "../../../../core/utils/http-status"
+@HttpMethod("POST", "/register")
+@RestController()
+export class CreateAccountController implements Controller {
+  constructor(
+    @Inject(CreateAccountService)
+    private readonly createAccountService: CreateAccountService,
+  ) {}
 
-export class CreateAccountController {
-  constructor(private readonly createAccountService: CreateAccountService) {}
-
-  async handler(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+  async handler(request: HttpRequest): Promise<HttpResponse> {
     const { name, email } = createAccountSchema.parse(request.body)
-
     const account = await this.createAccountService.execute({ name, email })
-
-    return reply
-      .status(HTTP_STATUS.CREATED)
-      .send({ message: "Account created successfully", account })
+    return ok({ message: "Account created successfully", account })
   }
 }

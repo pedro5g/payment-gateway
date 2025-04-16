@@ -28,6 +28,7 @@ export class AccountModel extends BaseModel implements IAccountModel {
     const rowsAffected = await this.knex("accounts")
       .update({
         name: entity.name,
+        updated_at: entity.updatedAt,
       })
       .where({
         id: entity.id,
