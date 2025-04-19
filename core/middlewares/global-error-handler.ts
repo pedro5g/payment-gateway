@@ -15,7 +15,6 @@ import { HTTP_STATUS } from "../../core/utils/http-status"
 
 export class GlobalErrorHandler implements ErrorHandler {
   async handler(httpError: object): Promise<HttpResponse> {
-    console.log(httpError)
     if (httpError instanceof SyntaxError) {
       return clientError({
         message: "Invalid Json format, please check your request body",

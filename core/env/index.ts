@@ -4,7 +4,8 @@ import { logger } from "../logger"
 export const envSchema = z.object({
   NODE_ENV: z.enum(["dev", "prod", "test"]).default("dev"),
   HOST: z.string().default("0.0.0.0"),
-  PORT: z.coerce.number().default(8000),
+  ACCOUNT_SERVER_PORT: z.coerce.number().default(8000),
+  GATEWAY_SERVER_PORT: z.coerce.number().default(8001),
   BASE_PATH: z.string().trim(),
   PG_DATABASE_HOST: z.string().trim().default("localhost"),
   PG_DATABASE_PORT: z.coerce.number(),

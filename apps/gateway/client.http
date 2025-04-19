@@ -1,0 +1,14 @@
+@baseURL = http://localhost:8001/api/v1/gateway
+@apiKey = 1ip2p6nm6-4da9ea6fbf9f5b89e8c5e8d158823f56db273233f604ae5a49bc6e1a5bd74a04
+
+# @name create_invoice
+
+POST {{baseURL}}/create
+Content-Type: application/json
+x-api-key: {{apiKey}}
+
+{
+    "paymentType": "credit_card",
+    "description": "invoice test",
+    "amount": 400
+}

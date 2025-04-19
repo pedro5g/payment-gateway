@@ -4,7 +4,8 @@ import { Middleware } from "../../../../../../../core/__domain/infra/middleware"
 export const adapterMiddleware = (middleware: Middleware) => {
   return async (request: FastifyRequest, reply: FastifyReply) => {
     const requestData = {
-      apiKey: request.headers?.["x-api-key"] as string | undefined,
+      apiKey: (request.headers?.["x-api-key"] as string | undefined) || "",
+      userId: "",
       ...(request.headers || {}),
     }
 
