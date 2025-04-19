@@ -5,8 +5,18 @@ declare module "knex/types/tables" {
     id: string
     name: string
     email: string
-    api_key: string
     balance: number
+    webhook_url: string | null
+    api_keys: ApiKey[]
+    created_at: Date
+    updated_at: Date
+  }
+
+  interface ApiKey {
+    id: string
+    account_id: string
+    key: string
+    active: boolean
     created_at: Date
     updated_at: Date
   }
@@ -18,7 +28,6 @@ declare module "knex/types/tables" {
     description: string | null
     status: "pending" | "approved" | "rejected"
     payment_type: string
-    card_last_digits: string
     created_at: Date
     updated_at: Date
   }
@@ -27,6 +36,7 @@ declare module "knex/types/tables" {
     // This is same as specifying `knex<User>('users')`
     accounts: Account
     invoices: Invoice
+    api_keys: ApiKey
     // For more advanced types, you can specify separate type
     // for base model, "insert" type and "update" type.
     // But first: notice that if you choose to use this,

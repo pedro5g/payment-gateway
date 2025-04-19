@@ -12,7 +12,6 @@ export interface IInvoice extends IEntity {
   status: Status
   description: string | null
   paymentType: string
-  cardLastDigits: string
 }
 
 export interface ICreditCard {

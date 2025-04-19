@@ -13,10 +13,18 @@ export function ok<T>(dto?: T): HttpResponse {
   }
 }
 
-export function created(): HttpResponse {
+export function created<T>(dto?: T): HttpResponse {
   return {
     ok: true,
     statusCode: HTTP_STATUS.CREATED,
+    body: dto,
+  }
+}
+
+export function noContent(): HttpResponse {
+  return {
+    ok: true,
+    statusCode: HTTP_STATUS.NO_CONTENT,
     body: undefined,
   }
 }

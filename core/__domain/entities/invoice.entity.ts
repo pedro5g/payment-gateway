@@ -4,13 +4,17 @@ import { Entity } from "./entity"
 
 export class Invoice extends Entity<IInvoice> {
   static create(
-    props: Optional<IInvoice, "id" | "createdAt" | "updatedAt" | "status">,
+    props: Optional<
+      IInvoice,
+      "id" | "createdAt" | "updatedAt" | "status" | "description"
+    >,
   ): Invoice {
     return new Invoice({
       ...props,
       id: props.id,
       status: props.status || Status.Pending,
       amount: Math.round(props.amount * 100),
+      description: props.description ?? null,
       createdAt: props.createdAt,
       updatedAt: props.updatedAt,
     })
@@ -33,10 +37,6 @@ export class Invoice extends Entity<IInvoice> {
   }
   get paymentType(): string {
     return this.props.paymentType
-  }
-
-  get cardLastDigits(): string {
-    return this.props.cardLastDigits
   }
 
   public approvedInvoice() {

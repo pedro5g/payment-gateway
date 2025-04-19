@@ -2,8 +2,8 @@ import { Tables } from "knex/types/tables"
 import { Account } from "../../__domain/entities/account.entity"
 import { IAccountModel } from "../../__domain/models/account.model"
 import { BaseModel } from "./base"
-import { genAPIKey } from "../../utils/gen-api-key"
 import { DatabaseException } from "../../../core/exceptions"
+import { ApiKey } from "core/__domain/entities/api-key.entity"
 
 export class AccountModel extends BaseModel implements IAccountModel {
   async save(entity: Account): Promise<void> {
@@ -12,8 +12,8 @@ export class AccountModel extends BaseModel implements IAccountModel {
         id: entity.id,
         name: entity.name,
         email: entity.email,
-        api_key: entity.APIKey,
         balance: entity.balance,
+        webhook_url: entity.webhookUrl,
         created_at: entity.createdAt,
         updated_at: entity.updatedAt,
       })
@@ -28,6 +28,7 @@ export class AccountModel extends BaseModel implements IAccountModel {
     const rowsAffected = await this.knex("accounts")
       .update({
         name: entity.name,
+        webhook_url: entity.webhookUrl,
         updated_at: entity.updatedAt,
       })
       .where({
@@ -76,53 +77,69 @@ export class AccountModel extends BaseModel implements IAccountModel {
   }
 
   async findByEmail(email: string): Promise<Account | null> {
-    const account = await this.knex
-      .select("*")
-      .from("accounts")
-      .where({
-        email,
-      })
-      .first()
-
-    return account ? this.toDomain(account) : null
+    const result = await this.knex.raw(
+      `
+            SELECT
+            a.*,
+            COALESCE(
+            JSON_AGG(
+                JSON_BUILD_OBJECT(
+                'id', k.id,
+                'account_id', k.account_id,
+                'key', k.key,
+                'active', k.active,
+                'created_at', k.created_at,
+                'updated_at', k.updated_at
+                )
+            ) FILTER (WHERE k.id IS NOT NULL), '[]'
+            ) AS api_keys
+        FROM accounts a
+        LEFT JOIN api_keys k ON a.id = k.account_id
+        WHERE a.email = ?
+        GROUP BY a.id
+    `,
+      [email],
+    )
+    const _account = result.rows[0]
+    return _account ? this.toDomain(_account) : null
   }
 
   async findByAPIKey(apiKey: string): Promise<Account | null> {
-    const account = await this.knex
-      .select("*")
-      .from("accounts")
-      .where({
-        api_key: apiKey,
-      })
+    const account = await this.knex("api_keys")
+      .where({ key: apiKey })
+      .join("accounts", "api_keys.account_id", "=", "accounts.id")
+      .select("accounts.*")
       .first()
 
     return account ? this.toDomain(account) : null
   }
 
   async findById(id: string): Promise<Account | null> {
-    const account = await this.knex
-      .select("*")
-      .from("accounts")
-      .where({
-        id,
-      })
-      .first()
-
-    return account ? this.toDomain(account) : null
-  }
-  async genApiKey(): Promise<string> {
-    let apiKey: string
-    let isUnique: boolean
-
-    do {
-      apiKey = genAPIKey()
-      const existing = await this.knex("accounts")
-        .where({ api_key: apiKey })
-        .first()
-      isUnique = !!existing
-    } while (isUnique)
-
-    return apiKey
+    const result = await this.knex.raw(
+      `
+            SELECT
+            a.*,
+            COALESCE(
+            JSON_AGG(
+                JSON_BUILD_OBJECT(
+                'id', k.id,
+                'account_id', k.account_id,
+                'key', k.key,
+                'active', k.active,
+                'created_at', k.created_at,
+                'updated_at', k.updated_at
+                )
+            ) FILTER (WHERE k.id IS NOT NULL), '[]'
+            ) AS api_keys
+        FROM accounts a
+        LEFT JOIN api_keys k ON a.id = k.account_id
+        WHERE a.id = ?
+        GROUP BY a.id
+    `,
+      [id],
+    )
+    const _account = result.rows[0]
+    return _account ? this.toDomain(_account) : null
   }
 
   private toDomain(account: Tables["accounts"]) {
@@ -130,7 +147,19 @@ export class AccountModel extends BaseModel implements IAccountModel {
       id: account.id,
       name: account.name,
       email: account.email,
-      APIKey: account.api_key,
+      webhookUrl: account.webhook_url,
+      apiKeys: account.api_keys
+        ? account.api_keys.map((apiKey) => {
+            return ApiKey.create({
+              id: apiKey.id,
+              key: apiKey.key,
+              active: apiKey.active,
+              accountId: apiKey.account_id,
+              createdAt: apiKey.created_at,
+              updatedAt: apiKey.updated_at,
+            })
+          })
+        : [],
       balance: parseInt(account.balance.toString()),
       createdAt: account.created_at,
       updatedAt: account.updated_at,

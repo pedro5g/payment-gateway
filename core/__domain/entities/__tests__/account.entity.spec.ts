@@ -1,12 +1,13 @@
 import { randomUUID } from "node:crypto"
 import { genAPIKey } from "../../../utils/gen-api-key"
 import { Account } from "../account.entity"
+import { ApiKey } from "../api-key.entity"
 
 let sut: Account
 const accountTestData = {
   name: "test",
   email: "test@gmail.com",
-  APIKey: genAPIKey(),
+  apiKeys: [],
 }
 
 describe("[Account] unit tests", () => {
@@ -16,9 +17,10 @@ describe("[Account] unit tests", () => {
   test("Create instance of Account", () => {
     expect(sut.name).toStrictEqual(accountTestData.name)
     expect(sut.email).toStrictEqual(accountTestData.email)
-    expect(sut.APIKey).toStrictEqual(accountTestData.APIKey)
+    expect(sut.apiKeys).toStrictEqual(accountTestData.apiKeys)
     expect(sut.balance).toStrictEqual(0)
     expect(sut.balanceInCents).toStrictEqual(0)
+    expect(sut.webhookUrl).toStrictEqual(null)
     expect(sut.createdAt).toBeTruthy()
     expect(sut.updatedAt).toBeTruthy()
     expect(sut.id).toBeTruthy()
@@ -36,6 +38,7 @@ describe("[Account] unit tests", () => {
       balance: 1200,
       createdAt: new Date(),
       updatedAt: new Date(),
+      apiKeys: [],
     }
 
     const accountInstance = Account.create(objectLiteral)
@@ -47,7 +50,7 @@ describe("[Account] unit tests", () => {
     expect(accountInstance.balanceInCents).toStrictEqual(
       Math.round(objectLiteral.balance * 100),
     )
-    expect(accountInstance.APIKey).toStrictEqual(objectLiteral.APIKey)
+    expect(accountInstance.apiKeys).toStrictEqual(objectLiteral.apiKeys)
     expect(accountInstance.createdAt).toStrictEqual(objectLiteral.createdAt)
     expect(accountInstance.updatedAt).toStrictEqual(objectLiteral.updatedAt)
   })
@@ -85,5 +88,24 @@ describe("[Account] unit tests", () => {
     sut.removeBalance(0.5)
     expect(sut.balance).toStrictEqual(2_099.5)
     expect(spyRemoveBalance).toHaveBeenCalledTimes(2)
+  })
+
+  test("Add web hook", () => {
+    sut.webhookUrl = "http://localhost:3000"
+    expect(sut.webhookUrl).toStrictEqual("http://localhost:3000")
+    sut.webhookUrl = null
+    expect(sut.webhookUrl).toStrictEqual(null)
+  })
+
+  test("Add api key", () => {
+    const apiKey = ApiKey.create({
+      key: genAPIKey(),
+      accountId: sut.id,
+    })
+
+    sut.apiKeys = apiKey
+    expect(sut.apiKeys).toHaveLength(1)
+    expect(sut.apiKeys[0].key).toStrictEqual(apiKey.key)
+    expect(sut.apiKeys[0].accountId).toStrictEqual(sut.id)
   })
 })

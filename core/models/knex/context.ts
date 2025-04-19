@@ -5,19 +5,23 @@ import { AccountModel } from "./account.model"
 import { BaseModel } from "./base"
 import { IInvoiceModel } from "../../__domain/models/invoice.model"
 import { InvoiceModel } from "./invoice.model"
+import { IApiKeyModel } from "../../__domain/models/api-key.model"
+import { ApiKeyModel } from "./api-key.model"
 
 export class Context {
   db: Knex
   accounts: IAccountModel
   invoices: IInvoiceModel
+  apikeys: IApiKeyModel
 
   constructor() {
     this.db = db
     this.accounts = new AccountModel(this)
     this.invoices = new InvoiceModel(this)
+    this.apikeys = new ApiKeyModel(this)
   }
 
-  async knexTransaction(fn: Function, callback?: (error: unknown) => void) {
+  async transaction(fn: Function, callback?: (error: unknown) => void) {
     try {
       await this.db.transaction(async (trx) => {
         for (const key in this) {

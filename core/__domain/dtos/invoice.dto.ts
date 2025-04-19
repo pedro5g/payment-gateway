@@ -5,11 +5,6 @@ export interface CreateInvoiceBodyDto {
   amount: number
   description: string | null
   paymentType: string
-  cardNumber: string
-  CVV: string
-  expiryMonth: number
-  expiryYear: number
-  cardholderName: string
 }
 
 export interface CreateInvoiceResponseDto {
@@ -19,9 +14,13 @@ export interface CreateInvoiceResponseDto {
   status: string
   description: string | null
   paymentType: string
-  cardLAstDigits: string
   createdAt: Date
   updatedAt: Date
+}
+
+export interface CreatePaymentBodyDto {
+  invoiceId: string
+  payerId: string
 }
 
 export interface UpdateInvoiceStatusBodyDto {
