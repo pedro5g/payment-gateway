@@ -9,9 +9,10 @@ import {
   RestController,
 } from "../core/domain/infra/decorators"
 import { HasApiKeyMiddleware } from "../../../../core/middlewares/has-api-key"
+import { IsAuthenticated } from "../../../../core/middlewares/is-authenticated"
 
 @HttpMethod("GET")
-@HttpMiddleware([HasApiKeyMiddleware])
+@HttpMiddleware([IsAuthenticated, HasApiKeyMiddleware])
 @RestController()
 export class GetAccountController implements Controller {
   constructor(
@@ -20,7 +21,7 @@ export class GetAccountController implements Controller {
   ) {}
 
   async handler(request: HttpRequest): Promise<HttpResponse> {
-    const apiKey = request.apiKey || ""
+    const apiKey = request.apiKey
     const account = await this.getAccountService.execute({ apiKey })
 
     return ok({ message: "Account", account })

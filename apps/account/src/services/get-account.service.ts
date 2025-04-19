@@ -22,7 +22,7 @@ export class GetAccountService {
       name: account.name,
       email: account.email,
       balance: account.balance,
-      APIKey: account.APIKey,
+      APIKey: apiKey,
       createdAt: account.createdAt,
       updatedAt: account.updatedAt,
     }

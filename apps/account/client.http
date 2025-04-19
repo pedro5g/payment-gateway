@@ -1,10 +1,9 @@
 @baseURL = http://localhost:8000/api/v1/account
-@apiKey =  1iotop56m-1fa7e3b67a70dd2f10be8537904fc9920e8276f6233ac8609f2bf1f8a74b9113
+@apiKey = 1ip2p6nm6-4da9ea6fbf9f5b89e8c5e8d158823f56db273233f604ae5a49bc6e1a5bd74a04
 
 # @name create_account
 POST {{baseURL}}/register
 Content-Type: application/json
-
 {
     "name": "test",
     "email": "test@email.com"
@@ -12,6 +11,46 @@ Content-Type: application/json
 
 ###
 
+# @name enter_in_account
+POST {{baseURL}}/login
+Content-Type: application/json
+
+{
+    "email": "test@email.com"
+}
+###
+
+# @name profile
+GET {{baseURL}}/me
+user_id: 237a0569-05fa-43e0-8a5c-a41f3a65531c
+
+###
+# @name update_webhook_url
+PATCH  {{baseURL}}/webhook/update
+Content-Type: application/json
+user_id: 237a0569-05fa-43e0-8a5c-a41f3a65531c
+
+{
+    "webhookUrl": null
+}
+
+###
+
+# @name create_new_api_key
+POST {{baseURL}}/api-key/new
+user_id: 237a0569-05fa-43e0-8a5c-a41f3a65531c
+
+### @name disable_api_key
+PATCH {{baseURL}}/api-key/a5e13995-034d-4eed-905e-71344028bea3/disable
+user_id: 237a0569-05fa-43e0-8a5c-a41f3a65531c
+
+###
+# @name list_api_keys
+GET {{baseURL}}/api-key/list
+user_id: 237a0569-05fa-43e0-8a5c-a41f3a65531c
+
+###
 # @name get_account
 GET {{baseURL}}/
+user_id: 237a0569-05fa-43e0-8a5c-a41f3a65531c
 X-Api-Key: {{apiKey}}

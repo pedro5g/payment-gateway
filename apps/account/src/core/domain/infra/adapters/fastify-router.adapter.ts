@@ -8,6 +8,7 @@ export const adapterRoute = (controller: Controller) => {
       params: request.params,
       query: request.query,
       apiKey: request.apiKey,
+      userId: request.userId,
     }
 
     const httpResponse = await controller.handler(requestData)
