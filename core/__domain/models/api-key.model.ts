@@ -5,4 +5,5 @@ export interface IApiKeyModel
   extends Pick<IBaseModel<ApiKey>, "save" | "findById" | "update"> {
   genApiKey(): Promise<string>
   listByAccountId(accountId: string): Promise<ApiKey[]>
+  findByKey(key: string): Promise<ApiKey | null>
 }

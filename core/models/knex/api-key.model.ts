@@ -53,6 +53,12 @@ export class ApiKeyModel extends BaseModel implements IApiKeyModel {
     return apiKey ? this.toDomain(apiKey) : null
   }
 
+  async findByKey(key: string): Promise<ApiKey | null> {
+    const _apiKey = await this.knex("api_keys").where({ key }).first()
+
+    return _apiKey ? this.toDomain(_apiKey) : null
+  }
+
   async genApiKey(): Promise<string> {
     let apiKey: string
     let isUnique: boolean

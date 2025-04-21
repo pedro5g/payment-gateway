@@ -8,6 +8,7 @@ const config: Config = {
     name: "Payment Gateway API v1",
     color: "cyanBright",
   },
+  extensionsToTreatAsEsm: [".ts", ".tsx"],
   moduleFileExtensions: ["js", "json", "ts"],
   rootDir: "./",
   testRegex: ".*\\.spec\\.ts$",

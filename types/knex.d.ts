@@ -7,6 +7,7 @@ declare module "knex/types/tables" {
     email: string
     balance: number
     webhook_url: string | null
+    auto_approve_limit: number
     api_keys: ApiKey[]
     created_at: Date
     updated_at: Date

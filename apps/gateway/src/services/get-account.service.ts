@@ -4,7 +4,10 @@ import {
   GetAccountResponseDto,
 } from "../../../../core/__domain/dtos/account.dto"
 import { Context } from "../../../../core/models/knex/context"
-import { Inject, Service } from "../core/domain/infra/decorators"
+import {
+  Inject,
+  Service,
+} from "../../../account/src/core/domain/infra/decorators"
 
 @Service()
 export class GetAccountService {

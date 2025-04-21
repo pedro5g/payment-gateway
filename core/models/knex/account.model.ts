@@ -14,6 +14,7 @@ export class AccountModel extends BaseModel implements IAccountModel {
         email: entity.email,
         balance: entity.balance,
         webhook_url: entity.webhookUrl,
+        auto_approve_limit: entity.autoApproveLimit,
         created_at: entity.createdAt,
         updated_at: entity.updatedAt,
       })
@@ -29,6 +30,7 @@ export class AccountModel extends BaseModel implements IAccountModel {
       .update({
         name: entity.name,
         webhook_url: entity.webhookUrl,
+        auto_approve_limit: entity.autoApproveLimit,
         updated_at: entity.updatedAt,
       })
       .where({
@@ -147,6 +149,7 @@ export class AccountModel extends BaseModel implements IAccountModel {
       id: account.id,
       name: account.name,
       email: account.email,
+      autoApproveLimit: account.auto_approve_limit,
       webhookUrl: account.webhook_url,
       apiKeys: account.api_keys
         ? account.api_keys.map((apiKey) => {

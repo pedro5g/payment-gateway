@@ -9,10 +9,9 @@ import {
   RestController,
 } from "../core/domain/infra/decorators"
 import { HasApiKeyMiddleware } from "../../../../core/middlewares/has-api-key"
-import { IsAuthenticated } from "../../../../core/middlewares/is-authenticated"
 
 @HttpMethod("GET")
-@HttpMiddleware([IsAuthenticated, HasApiKeyMiddleware])
+@HttpMiddleware([HasApiKeyMiddleware])
 @RestController()
 export class GetAccountController implements Controller {
   constructor(

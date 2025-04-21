@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { logger } from "../logger"
+import { Logger } from "../logger"
 
 export const envSchema = z.object({
   NODE_ENV: z.enum(["dev", "prod", "test"]).default("dev"),
@@ -17,9 +17,9 @@ export const envSchema = z.object({
 const _env = envSchema.safeParse(process.env)
 
 if (!_env.success) {
-  logger.error(
+  new Logger("Env").error(
+    `Invalid environments variables ❌❌❌❌❌`,
     _env.error.flatten().fieldErrors,
-    "Invalid environments variables ❌❌❌❌❌",
   )
   throw new Error("Invalid environments variables")
 }

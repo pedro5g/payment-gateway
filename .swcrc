@@ -9,6 +9,7 @@
     "keepClassNames": true
   },
   "module": {
+    "strictMode": true,
     "type": "nodenext",
     "strict": true,
     "noInterop": true

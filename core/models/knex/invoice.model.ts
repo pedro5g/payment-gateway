@@ -51,9 +51,18 @@ export class InvoiceModel extends BaseModel implements IInvoiceModel {
     return invoice ? this.toDomain(invoice) : null
   }
 
-  async findByAccountId(accountId: string): Promise<Invoice[] | null> {
+  async findByAccountId(accountId: string): Promise<Invoice[]> {
     const invoices = await this.knex("invoices").select("*").where({
       account_id: accountId,
+    })
+
+    return invoices.map(this.toDomain)
+  }
+
+  async listPendingInvoices(accountId: string): Promise<Invoice[]> {
+    const invoices = await this.knex("invoices").select("*").where({
+      account_id: accountId,
+      status: "pending",
     })
 
     return invoices.map(this.toDomain)

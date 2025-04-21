@@ -7,7 +7,13 @@ export class Account extends Entity<IAccount> {
   static create(
     props: Optional<
       IAccount,
-      "id" | "createdAt" | "updatedAt" | "balance" | "apiKeys" | "webhookUrl"
+      | "id"
+      | "createdAt"
+      | "updatedAt"
+      | "balance"
+      | "apiKeys"
+      | "webhookUrl"
+      | "autoApproveLimit"
     >,
   ): Account {
     return new Account({
@@ -16,6 +22,7 @@ export class Account extends Entity<IAccount> {
       balance: Math.round((props.balance || 0) * 100),
       apiKeys: props.apiKeys ?? [],
       webhookUrl: props.webhookUrl || null,
+      autoApproveLimit: Math.round((props.autoApproveLimit || 0) * 100),
       createdAt: props.createdAt,
       updatedAt: props.updatedAt,
     })
@@ -49,6 +56,13 @@ export class Account extends Entity<IAccount> {
   set webhookUrl(value: string | null) {
     this.props.webhookUrl = value
     this.onUpdate()
+  }
+
+  get autoApproveLimit() {
+    return this.toBalance(this.props.autoApproveLimit)
+  }
+  set autoApproveLimit(value: number) {
+    this.props.autoApproveLimit = this.toCents(value)
   }
 
   get balance() {

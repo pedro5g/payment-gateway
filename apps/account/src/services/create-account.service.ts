@@ -40,6 +40,7 @@ export class CreateAccountService {
         name: account.name,
         email: account.email,
         balance: account.balance,
+        autoApproveLimit: account.autoApproveLimit,
         apiKeys: account.apiKeys.map((key) => ({
           id: key.id,
           key: key.key,

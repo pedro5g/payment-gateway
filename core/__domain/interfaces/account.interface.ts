@@ -7,4 +7,5 @@ export interface IAccount extends IEntity {
   balance: number
   apiKeys: IApiKey[]
   webhookUrl: string | null
+  autoApproveLimit: number
 }

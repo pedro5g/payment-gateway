@@ -39,9 +39,22 @@ export interface GetAccountResponseDto {
   updatedAt: Date
 }
 
+export interface UpdateAddBalanceBodyDto {
+  accountId: string
+  balance: number
+}
+
+export interface UpdateAddBalanceResponseDto {}
+
 //update webhook url dto
 export interface UpdateWebhookBodyDto {
   accountId: string
   webhookUrl: string | null
 }
 export interface UpdateWebhookResponseDto {}
+
+export interface UpdateAutoApproveLimitBodyDto {
+  accountId: string
+  limit: number
+}
+export interface UpdateAutoApproveLimitResponseDto {}

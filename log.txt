@@ -1,0 +1,2 @@
+[2025-04-21T22:16:59.426Z] INFO (AccountApp): Account server is running at port 8000
+[2025-04-21T22:17:00.872Z] INFO (GatewayApp): Gateway server is running at port 8001

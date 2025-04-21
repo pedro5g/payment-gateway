@@ -24,7 +24,6 @@ export class CreateInvoiceController implements Controller {
   ) {}
 
   async handler(request: HttpRequest): Promise<HttpResponse> {
-    console.log(request.body)
     const { amount, description, paymentType } = createInvoiceSchema.parse(
       request.body,
     )
