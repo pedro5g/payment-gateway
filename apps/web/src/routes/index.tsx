@@ -7,12 +7,13 @@ import {
 } from "./common/routes"
 import { NotFound } from "../pages/not-found"
 import { AppLayout } from "../layouts/app-layout"
+import { LeadingLayout } from "../layouts/leading-layout"
 
 export function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<BaseLayout />}>
+        <Route element={<LeadingLayout />}>
           {publicRoutes.map((route) => (
             <Route key={route.path} path={route.path} element={route.element} />
           ))}
