@@ -5,6 +5,7 @@ import {
 import { Context } from "../../../../core/models/knex/context"
 import { Inject, Service } from "../core/domain/infra/decorators"
 import {
+  BadRequestException,
   ForbiddenException,
   NotFoundException,
 } from "../../../../core/exceptions"
@@ -41,8 +42,21 @@ export class ApprovedInvoiceService {
       )
     }
 
-    invoice.approvedInvoice()
-    await this.context.invoices.updateStatus(invoice)
+    if (invoice.accountId !== account.id) {
+      throw new ForbiddenException("You can only approve your own invoices")
+    }
+
+    await this.context.transaction(async () => {
+      const hasBalance = account.balance - invoice.amount
+
+      if (hasBalance < 0) {
+        throw new BadRequestException("Insufficient balance")
+      }
+      account.removeBalance(invoice.amount)
+      invoice.approvedInvoice()
+      await this.context.accounts.updateBalance(account)
+      await this.context.invoices.updateStatus(invoice)
+    })
 
     return {}
   }

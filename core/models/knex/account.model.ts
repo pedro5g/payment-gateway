@@ -107,10 +107,12 @@ export class AccountModel extends BaseModel implements IAccountModel {
   }
 
   async findByAPIKey(apiKey: string): Promise<Account | null> {
-    const account = await this.knex("api_keys")
-      .where({ key: apiKey })
-      .join("accounts", "api_keys.account_id", "=", "accounts.id")
-      .select("accounts.*")
+    const _apiKey = await this.knex("api_keys").where({ key: apiKey }).first()
+
+    if (!_apiKey) return null
+    const account = await this.knex("accounts")
+      .select("*")
+      .where({ id: _apiKey.account_id })
       .first()
 
     return account ? this.toDomain(account) : null

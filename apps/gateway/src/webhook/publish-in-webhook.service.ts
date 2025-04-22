@@ -1,5 +1,4 @@
 import { Logger } from "../../../../core/logger"
-import https from "node:https"
 
 export interface PublishInWebhookBodyDto {
   url: string
@@ -12,37 +11,18 @@ export class PublishInWebhookService {
 
   async execute({ url, body }: PublishInWebhookBodyDto) {
     this.logger.warn(`Try publish in webhook to ${url}`)
-    return new Promise((resolve, reject) => {
-      https
-        .request(
-          url,
-          {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-              "content-length": Buffer.byteLength(JSON.stringify(body)),
-            },
-          },
-          (res) => {
-            let data = ""
 
-            res.on("data", (chunk: string) => {
-              data += chunk
-            })
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(body),
+      })
 
-            res.on("end", () => {
-              try {
-                const response = JSON.parse(data)
-                resolve(response)
-              } catch (error) {
-                reject(new Error("Failed to parse JSON response"))
-              }
-            })
-          },
-        )
-        .on("error", (error: Error) => {
-          reject(error)
-        })
-    })
+      const response = await res.json()
+      return response
+    } catch (e) {
+      return e
+    }
   }
 }

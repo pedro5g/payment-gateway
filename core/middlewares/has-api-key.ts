@@ -42,6 +42,6 @@ export class HasApiKeyMiddleware implements Middleware {
       return unauthorized({ message: "Invalid or missing ApiKey" })
     }
 
-    return ok({ apiKey })
+    return ok({ apiKey: _apiKey })
   }
 }

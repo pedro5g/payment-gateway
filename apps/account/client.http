@@ -9,6 +9,28 @@ Content-Type: application/json
     "email": "test@email.com"
 }
 
+
+###
+# @name add_balance
+POST {{baseURL}}/add-balance
+Content-Type: application/json 
+user_id: 237a0569-05fa-43e0-8a5c-a41f3a65531c
+
+{
+    "balance": 2500
+}
+
+###
+
+# @name add_auto_approve_limit
+PATCH  {{baseURL}}/limit/update
+Content-Type: application/json 
+user_id: 237a0569-05fa-43e0-8a5c-a41f3a65531c
+
+{
+    "limit": 200
+}
+
 ###
 
 # @name enter_in_account
@@ -31,7 +53,7 @@ Content-Type: application/json
 user_id: 237a0569-05fa-43e0-8a5c-a41f3a65531c
 
 {
-    "webhookUrl": null
+    "webhookUrl": "http://localhost:3000/results"
 }
 
 ###

@@ -12,3 +12,36 @@ x-api-key: {{apiKey}}
     "description": "invoice test",
     "amount": 400
 }
+
+
+###
+# @name get_account
+GET {{baseURL}}/
+x-api-key: {{apiKey}}
+
+###
+
+# @name add_balance
+POST {{baseURL}}/add-balance
+Content-Type: application/json
+x-api-key: {{apiKey}}
+
+{
+    "amount": 200
+}
+
+###
+
+# @name check_balance
+GET {{baseURL}}/balance
+x-api-key: {{apiKey}}
+
+
+###
+# @name approved_invoice
+PUT {{baseURL}}/approved/55a2fe8a-47df-4b81-811a-62c80e588ec5
+x-api-key: {{apiKey}}
+###
+# @name rejected_invoice
+PUT {{baseURL}}/rejected/7ff46b33-3e51-485f-90b1-61effe5b55da
+x-api-key: {{apiKey}}

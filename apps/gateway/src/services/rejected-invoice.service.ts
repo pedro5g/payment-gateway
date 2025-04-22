@@ -41,6 +41,10 @@ export class RejectedInvoiceService {
       )
     }
 
+    if (invoice.accountId !== account.id) {
+      throw new ForbiddenException("You can only reject your own invoices")
+    }
+
     invoice.rejectedInvoice()
     await this.context.invoices.updateStatus(invoice)
 
