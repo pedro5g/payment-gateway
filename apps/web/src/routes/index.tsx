@@ -8,6 +8,8 @@ import {
 import { NotFound } from "../pages/not-found"
 import { AppLayout } from "../layouts/app-layout"
 import { LeadingLayout } from "../layouts/leading-layout"
+import { AuthRoute } from "./auth-route"
+import { AuthLayout } from "../layouts/auth-layout"
 
 export function AppRoutes() {
   return (
@@ -19,15 +21,17 @@ export function AppRoutes() {
           ))}
         </Route>
 
-        <Route path="/" element={<></>}>
+        <Route path="/" element={<AuthRoute />}>
           <Route element={<BaseLayout />}>
-            {authenticationRoutes.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
+            <Route element={<AuthLayout />}>
+              {authenticationRoutes.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={route.element}
+                />
+              ))}
+            </Route>
           </Route>
         </Route>
 

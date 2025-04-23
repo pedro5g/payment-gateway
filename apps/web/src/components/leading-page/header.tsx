@@ -1,5 +1,6 @@
 import { Link } from "react-router"
 import { Button } from "./button"
+import { Logo } from "../logo"
 
 type LinkType = {
   name: string
@@ -16,7 +17,7 @@ export const Header = () => {
   return (
     <header className="flex justify-between items-center h-14 w-full">
       <div>
-        <img src="leading/Logo.png" alt="logo" width={84} height={42} />
+        <Logo />
       </div>
       <div className="flex items-center gap-5">
         <div>
